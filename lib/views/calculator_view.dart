@@ -107,6 +107,10 @@ class _CalculatorViewState extends State<CalculatorView> {
       convertToPercentage();
       return;
     }
+    if (value == Btn.calculate) {
+      calculate();
+      return;
+    }
     appendsValue(value);
   }
 
@@ -169,6 +173,38 @@ class _CalculatorViewState extends State<CalculatorView> {
     final number = double.parse(number1);
     setState(() {
       number1 = '${(number / 100)}';
+      operand = '';
+      number2 = '';
+    });
+  }
+
+  void calculate() {
+    if (number1.isEmpty) return;
+    if (operand.isEmpty) return;
+    if (number2.isEmpty) return;
+    double num1 = double.parse(number1);
+    double num2 = double.parse(number2);
+    double result = 0.0;
+    switch (operand) {
+      case Btn.add:
+        result = num1 + num2;
+        break;
+      case Btn.subtract:
+        result = num1 - num2;
+        break;
+      case Btn.multiply:
+        result = num1 * num2;
+        break;
+      case Btn.divide:
+        result = num1 / num2;
+        break;
+      default:
+    }
+    setState(() {
+      number1 = result.toString();
+      if (number1.endsWith('.0')) {
+        number1 = number1.substring(0, number1.length - 2);
+      }
       operand = '';
       number2 = '';
     });
