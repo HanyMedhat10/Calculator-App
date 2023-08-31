@@ -111,7 +111,7 @@ class _CalculatorViewState extends State<CalculatorView> {
       calculate();
       return;
     }
-    appendsValue(value);
+    appendValue(value);
   }
 
   void delete() {
@@ -126,32 +126,42 @@ class _CalculatorViewState extends State<CalculatorView> {
     setState(() {});
   }
 
-  void appendsValue(String value) {
-    // number 1 operand number2
+void appendValue(String value) {
+    // number1 opernad number2
+    // 234       +      5343
+
+    // if is operand and not "."
     if (value != Btn.dot && int.tryParse(value) == null) {
-      //
+      // operand pressed
       if (operand.isNotEmpty && number2.isNotEmpty) {
-        // TODO calculate the equation before assigning new
+        // TODO calculate the equation before assigning new operand
+        calculate();
       }
       operand = value;
-    } else if (number1.isEmpty || operand.isEmpty) {
-      // "21" "+" "22"
+    }
+    // assign value to number1 variable
+    else if (number1.isEmpty || operand.isEmpty) {
+      // check if value is "." | ex: number1 = "1.2"
       if (value == Btn.dot && number1.contains(Btn.dot)) return;
-      if (value == Btn.dot && number1.isEmpty || number1 == Btn.dot) {
-        value = '0.';
+      if (value == Btn.dot && (number1.isEmpty || number1 == Btn.n0)) {
+        // ex: number1 = "" | "0"
+        value = "0.";
       }
       number1 += value;
-    } else if (number2.isEmpty || operand.isEmpty) {
-      // "21" "+" "22"
+    }
+    // assign value to number2 variable
+    else if (number2.isEmpty || operand.isNotEmpty) {
+      // check if value is "." | ex: number1 = "1.2"
       if (value == Btn.dot && number2.contains(Btn.dot)) return;
-      if (value == Btn.dot && number2.isEmpty || number2 == Btn.dot) {
-        value = '0.';
+      if (value == Btn.dot && (number2.isEmpty || number2 == Btn.n0)) {
+        // number1 = "" | "0"
+        value = "0.";
       }
       number2 += value;
     }
+
     setState(() {});
   }
-
   void clearAll() {
     setState(() {
       number1 = '';
@@ -164,7 +174,7 @@ class _CalculatorViewState extends State<CalculatorView> {
     // ex: 434+325
     if (number1.isNotEmpty && operand.isNotEmpty && number2.isNotEmpty) {
       // calculate before conversion
-      // TODO
+      calculate();
     }
     if (operand.isNotEmpty) {
       // cannot be converted
